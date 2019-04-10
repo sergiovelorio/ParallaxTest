@@ -1,7 +1,5 @@
 package com.example.sergiovelorio.parallaxtest.util;
 
-import android.content.Context;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
@@ -13,7 +11,6 @@ import java.io.File;
 
 public class Constants {
     public static AssetManager am = new AssetManager(new customRF());
-    public static int BASE_SIZE;
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
     public static float GLOBAL;

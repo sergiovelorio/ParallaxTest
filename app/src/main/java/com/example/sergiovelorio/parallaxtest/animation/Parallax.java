@@ -3,12 +3,15 @@ package com.example.sergiovelorio.parallaxtest.animation;
 import com.badlogic.gdx.Game;
 
 public class Parallax extends Game {
+    Layers layers;
 
-    public Parallax() {}
+    public Parallax(Layers layers) {
+        this.layers = layers;
+    }
 
     @Override
     public void create () {
-        this.setScreen(new ParallaxScreen());
+        this.setScreen(new ParallaxScreen(layers));
     }
 
     @Override

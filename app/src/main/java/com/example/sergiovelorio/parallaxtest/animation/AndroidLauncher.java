@@ -9,27 +9,26 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.example.sergiovelorio.parallaxtest.util.Constants;
 
+import java.util.ArrayList;
+
 public class AndroidLauncher extends AndroidApplication {
 
     public View v;
     private int prev, init;
     private int movement;
     public float global_scroll;
-    public float prev_global_scroll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        config.useAccelerometer = false;
-        config.useCompass = false;
+
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
+
         Constants.SCREEN_WIDTH = dm.widthPixels;
         Constants.SCREEN_HEIGHT = dm.heightPixels;
-        Constants.BASE_SIZE = (int) (Constants.SCREEN_HEIGHT * 1.3f / 100);
 
-        v = initializeForView(new Parallax(), config);
+        v = initializeForView(new Parallax(layers()), new AndroidApplicationConfiguration());
 
         v.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -51,7 +50,6 @@ public class AndroidLauncher extends AndroidApplication {
                                 movement = -100;
                             }
                             animate = true;
-                            prev_global_scroll = global_scroll;
                             global_scroll += movement;
                             if(global_scroll > 0) {
                                 global_scroll = 0;
@@ -65,7 +63,6 @@ public class AndroidLauncher extends AndroidApplication {
                                 prev = (int) event.getX();
                             }
                             animate = true;
-                            prev_global_scroll = global_scroll;
                             global_scroll += movement;
                             if(global_scroll > 0) {
                                 global_scroll = 0;
@@ -87,5 +84,50 @@ public class AndroidLauncher extends AndroidApplication {
     @Override
     public void onStart() {
         super.onStart();
+    }
+
+    public Layers layers(){
+        Layers layers = new Layers();
+
+        ArrayList<String> layer1 = new ArrayList<>();
+        ArrayList<String> layer2 = new ArrayList<>();
+        ArrayList<String> layer3 = new ArrayList<>();
+        ArrayList<String> layer4 = new ArrayList<>();
+        ArrayList<String> statics = new ArrayList<>();
+        ArrayList<String> backgrounds = new ArrayList<>();
+        ArrayList<String> transitions = new ArrayList<>();
+
+        layer1.add("l1.png");
+        layer1.add("l1.png");
+        layer1.add("l1.png");
+        layer1.add("l1.png");
+        layer2.add("l2.png");
+        layer2.add("l2.png");
+        layer2.add("l2.png");
+        layer2.add("l2.png");
+        layer3.add("l3.png");
+        layer3.add("l3.png");
+        layer3.add("l3.png");
+        layer3.add("l3.png");
+        layer4.add("l4.png");
+        layer4.add("l4.png");
+        layer4.add("l4.png");
+        layer4.add("l4.png");
+
+        statics.add("l7.png");
+        backgrounds.add("l8.png");
+        backgrounds.add("l8.png");
+        backgrounds.add("l8.png");
+        backgrounds.add("l8.png");
+
+        layers.setLayer1(layer1);
+        layers.setLayer2(layer2);
+        layers.setLayer3(layer3);
+        layers.setLayer4(layer4);
+        layers.setStatics(statics);
+        layers.setBackgrounds(backgrounds);
+        layers.setTransitions(transitions);
+
+        return layers;
     }
 }

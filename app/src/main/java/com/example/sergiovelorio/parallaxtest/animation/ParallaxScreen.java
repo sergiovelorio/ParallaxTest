@@ -13,9 +13,9 @@ public class ParallaxScreen implements Screen {
     public ParallaxBackground scrollingBackground;
     public Input i;
 
-    public ParallaxScreen() {
+    public ParallaxScreen(Layers layers) {
         batch = new SpriteBatch();
-        this.scrollingBackground = new ParallaxBackground(Constants.am);
+        this.scrollingBackground = new ParallaxBackground(Constants.am, layers);
 
         i = Gdx.input;
         i.setInputProcessor(new InputAdapter(){

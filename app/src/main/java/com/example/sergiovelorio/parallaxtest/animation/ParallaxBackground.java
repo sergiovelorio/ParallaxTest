@@ -12,6 +12,7 @@ import java.util.Set;
 public class ParallaxBackground {
 
     AssetManager am;
+    Layers layers;
 
     ArrayList<_Texture> layer1 = new ArrayList<>();
     ArrayList<_Texture> layer2 = new ArrayList<>();
@@ -24,72 +25,39 @@ public class ParallaxBackground {
     Hashtable<String, Boolean> queued = new Hashtable<>();
     Set<String> keys;
 
-    ArrayList<String> lma1 = new ArrayList<>();
-    ArrayList<String> lma2 = new ArrayList<>();
-    ArrayList<String> lma3 = new ArrayList<>();
-    ArrayList<String> lma4 = new ArrayList<>();
-    ArrayList<String> statics = new ArrayList<>();
-    ArrayList<String> backgrounds = new ArrayList<>();
-    ArrayList<String> transitions = new ArrayList<>();
-
-    public ParallaxBackground(AssetManager am) {
+    public ParallaxBackground(AssetManager am, Layers layers) {
 
         this.am = am;
+        this.layers = layers;
 
-        lma1.add("l1.png");
-        lma1.add("l1.png");
-        lma1.add("l1.png");
-        lma1.add("l1.png");
-        lma2.add("l2.png");
-        lma2.add("l2.png");
-        lma2.add("l2.png");
-        lma2.add("l2.png");
-        lma3.add("l3.png");
-        lma3.add("l3.png");
-        lma3.add("l3.png");
-        lma3.add("l3.png");
-        lma4.add("l4.png");
-        lma4.add("l4.png");
-        lma4.add("l4.png");
-        lma4.add("l4.png");
+        ArrayList<String> all_images = layers.all_images();
 
-        statics.add("l7.png");
-        backgrounds.add("l8.png");
-        backgrounds.add("l8.png");
-        backgrounds.add("l8.png");
-        backgrounds.add("l8.png");
+        for(int i = 0; i < all_images.size(); i++){
+            toLoad.put(all_images.get(i), false);
+            queued.put(all_images.get(i), false);
+        }
 
-        toLoad.put("l1.png", false);
-        toLoad.put("l2.png", false);
-        toLoad.put("l3.png", false);
-        toLoad.put("l4.png", false);
-        toLoad.put("l8.png", false);
-        queued.put("l1.png", false);
-        queued.put("l2.png", false);
-        queued.put("l3.png", false);
-        queued.put("l4.png", false);
-        queued.put("l8.png", false);
+        for(int i=0; i<layers.getLayer1().size()*8; i++)
+            layer1.add(new _Texture(layers.getLayer1().get(0), i*Constants.SCREEN_HEIGHT,layers.getLayer1().size()*8, false));
 
-        for(int i=0; i<lma1.size()*8; i++)
-            layer1.add(new _Texture(lma1.get(0), i*Constants.SCREEN_HEIGHT,lma1.size()*8, false));
+        for(int i=0; i<layers.getLayer2().size()*4; i++)
+            layer2.add(new _Texture(layers.getLayer2().get(0), i*Constants.SCREEN_HEIGHT,layers.getLayer2().size()*4, false));
 
-        for(int i=0; i<lma2.size()*4; i++)
-            layer2.add(new _Texture(lma2.get(0), i*Constants.SCREEN_HEIGHT,lma2.size()*4, false));
+        for(int i=0; i<layers.getLayer3().size()*2; i++)
+            layer3.add(new _Texture(layers.getLayer3().get(0), i*Constants.SCREEN_HEIGHT,layers.getLayer3().size()*2, false));
 
-        for(int i=0; i<lma3.size()*2; i++)
-            layer3.add(new _Texture(lma3.get(0), i*Constants.SCREEN_HEIGHT,lma3.size()*2, false));
+        for(int i=0; i<layers.getLayer4().size(); i++)
+            layer4.add(new _Texture(layers.getLayer4().get(0), i*Constants.SCREEN_HEIGHT,layers.getLayer4().size(), false));
 
-        for(int i=0; i<lma4.size(); i++)
-            layer4.add(new _Texture(lma4.get(0), i*Constants.SCREEN_HEIGHT,lma4.size(), false));
+        for(int i=0; i<layers.getBackgrounds().size(); i++)
+            layerB.add(new _Texture(layers.getBackgrounds().get(0),i*Constants.SCREEN_HEIGHT,layers.getBackgrounds().size(), false));
 
-        for(int i=0; i<backgrounds.size(); i++)
-            layerB.add(new _Texture(backgrounds.get(0),i*Constants.SCREEN_HEIGHT,backgrounds.size(), false));
-
-        for(int i=0; i<transitions.size(); i++)
-            layerT.add(new _Texture(transitions.get(0),((i + 1)*Constants.SCREEN_HEIGHT*8)-Constants.SCREEN_HEIGHT/2,lma3.size()*2,true));
+        for(int i=0; i<layers.getTransitions().size(); i++)
+            layerT.add(new _Texture(layers.getTransitions().get(0),((i + 1)*Constants.SCREEN_HEIGHT*8)-Constants.SCREEN_HEIGHT/2,layers.getLayer3().size()*2,true));
     }
 
     public void updateAndRender (float globalR, SpriteBatch batch) {
+
         am.update();
 
         for (Hashtable.Entry<String, Boolean> entry : toLoad.entrySet())
@@ -132,17 +100,19 @@ public class ParallaxBackground {
         for(int i = 0; i < layerB.size(); i++)
             layerB.get(i).draw(globalR/8, batch);
 
-        if(((int) (-globalR/(Constants.SCREEN_HEIGHT *32)))%statics.size() < statics.size()){
-            if(!am.isLoaded((statics.get(((int) (-globalR/(Constants.SCREEN_HEIGHT *32)))%statics.size())), Texture.class)){
-                if(am.getQueuedAssets() == 0){
-                    am.load((statics.get(((int) (-globalR/(Constants.SCREEN_HEIGHT *32)))%statics.size())), Texture.class);
+        if(layers.getStatics().size() > 0){
+            if(((int) (-globalR/(Constants.SCREEN_HEIGHT *32)))% layers.getStatics().size() < layers.getStatics().size()){
+                if(!am.isLoaded((layers.getStatics().get(((int) (-globalR/(Constants.SCREEN_HEIGHT *32)))% layers.getStatics().size())), Texture.class)){
+                    if(am.getQueuedAssets() == 0){
+                        am.load((layers.getStatics().get(((int) (-globalR/(Constants.SCREEN_HEIGHT *32)))% layers.getStatics().size())), Texture.class);
+                    }
                 }
-            }
-            else{
-                try {
-                    batch.draw(am.get((statics.get(((int) (-globalR/(Constants.SCREEN_HEIGHT *32)))%statics.size())), Texture.class), 0, Constants.SCREEN_HEIGHT - Constants.SCREEN_WIDTH, Constants.SCREEN_WIDTH, Constants.SCREEN_WIDTH);
-                }catch (Exception e){
-                    e.printStackTrace();
+                else{
+                    try {
+                        batch.draw(am.get((layers.getStatics().get(((int) (-globalR/(Constants.SCREEN_HEIGHT *32)))% layers.getStatics().size())), Texture.class), 0, Constants.SCREEN_HEIGHT - Constants.SCREEN_WIDTH, Constants.SCREEN_WIDTH, Constants.SCREEN_WIDTH);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         }
