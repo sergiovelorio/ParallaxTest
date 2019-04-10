@@ -1,33 +1,22 @@
 package com.example.sergiovelorio.parallaxtest.animation;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.badlogic.gdx.backends.android.AndroidFragmentApplication;
 import com.example.sergiovelorio.parallaxtest.util.Constants;
-
-import java.util.Calendar;
 
 public class AndroidLauncher extends AndroidApplication {
 
-    public SpaceGame sg;
     public View v;
     private int prev, init;
     private int movement;
     public float global_scroll;
     public float prev_global_scroll;
-
-    public AndroidLauncher(){
-        sg = new SpaceGame();
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,11 +31,7 @@ public class AndroidLauncher extends AndroidApplication {
         Constants.SCREEN_HEIGHT = dm.heightPixels;
         Constants.BASE_SIZE = (int) (Constants.SCREEN_HEIGHT * 1.3f / 100);
 
-
-
-
-
-        v = initializeForView(new SpaceGame(), config);
+        v = initializeForView(new ParallaxBackground(), config);
 
         v.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -101,23 +86,8 @@ public class AndroidLauncher extends AndroidApplication {
         setContentView(v);
     }
 
-
-
-    @SuppressLint("ValidFragment")
-    public AndroidLauncher(int channelIndex){
-//        sg = new SpaceGame(channelIndex);
-    }
-
     @Override
     public void onStart() {
         super.onStart();
-    }
-
-
-    public View getNewView(){
-        if(v==null){
-            v = initializeForView(sg);
-        }
-        return v;
     }
 }

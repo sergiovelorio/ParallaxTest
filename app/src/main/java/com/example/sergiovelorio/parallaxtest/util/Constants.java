@@ -1,7 +1,6 @@
 package com.example.sergiovelorio.parallaxtest.util;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
@@ -9,13 +8,11 @@ import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
 
 import java.io.File;
 
 public class Constants {
     public static AssetManager am = new AssetManager(new customRF());
-    public static boolean START_RENDERING = false;
     public static Context CURRENT_CONTEXT;
     public static int BASE_SIZE;
     public static int SCREEN_WIDTH;
@@ -33,7 +30,6 @@ public class Constants {
         Constants.am.setErrorListener(new AssetErrorListener() {
             @Override
             public void error(AssetDescriptor asset, Throwable throwable) {
-                Log.d("wawa", "error: "+asset.fileName);
                 try {
                     File file = new File(asset.fileName);
                     file.delete();

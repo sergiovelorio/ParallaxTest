@@ -1,21 +1,12 @@
 package com.example.sergiovelorio.parallaxtest.animation;
 
-import android.util.Log;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.example.sergiovelorio.parallaxtest.util.Constants;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Random;
 import java.util.Set;
 
 
@@ -30,7 +21,6 @@ public class ScrollingBackground {
     float imageScale;
     public int scenes;
     boolean loadingStatic;
-    BitmapFont bmf;
 
     Hashtable<String, Boolean> toLoad = new Hashtable<String, Boolean>();
     Hashtable<String, Boolean> queued = new Hashtable<String, Boolean>();
@@ -39,8 +29,6 @@ public class ScrollingBackground {
     AssetManager am;
 
     public static final int DEFAULT_SPEED = 80;
-    public static final int ACCELERATION = 50;
-    public static final int GOAL_REACH_ACCELERATION = 200;
 
     float y1;
     int speed;
@@ -55,25 +43,12 @@ public class ScrollingBackground {
     ArrayList<String> backgrounds = new ArrayList<>();
     ArrayList<String> transitions = new ArrayList<>();
 
-    private Animation<TextureRegion> animation;
-
-
-    int index;
-
     int aux = 0;
 
-    public ScrollingBackground (AssetManager am, int index) {
+    public ScrollingBackground (AssetManager am) {
 
         this.am = am;
         loadingStatic = false;
-
-        /*FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto/Roboto-Bold.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = Constants.BASE_SIZE * 569 / 100 / 2;
-        bmf = generator.generateFont(parameter);
-        generator.dispose();*/
-
-        this.index = index;
 
         y1 = 0;
         speed = 0;
@@ -111,7 +86,6 @@ public class ScrollingBackground {
         queued.put("l3.png", false);
         queued.put("l4.png", false);
 
-
         imageScale = 1;
         scenes = lma1.size()/4;
 
@@ -136,20 +110,7 @@ public class ScrollingBackground {
 
     }
 
-    public void updateAndRender (float globalR, SpriteBatch batch, float deltaTime) {
-        if (speed < goalSpeed) {
-            speed += GOAL_REACH_ACCELERATION * deltaTime;
-            if (speed > goalSpeed)
-                speed = goalSpeed;
-        } else if (speed > goalSpeed) {
-            speed -= GOAL_REACH_ACCELERATION * deltaTime;
-            if (speed < goalSpeed)
-                speed = goalSpeed;
-        }
-
-        if (!speedFixed)
-            speed += ACCELERATION * deltaTime;
-
+    public void updateAndRender (float globalR, SpriteBatch batch) {
         am.update();
 
         for (Hashtable.Entry<String, Boolean> entry : toLoad.entrySet())
@@ -222,11 +183,6 @@ public class ScrollingBackground {
         for(int i = 0; i < layer1.size(); i++)
             layer1.get(i).draw(globalR,batch,1);
     }
-
-    /*private Animation<TextureRegion> getConfettiAnimation() {
-        ConfettiAnimation animation = new ConfettiAnimation();
-        return animation.generateConffetiAnimation();
-    }*/
 
     public class Tex_ture {
         final String i;
