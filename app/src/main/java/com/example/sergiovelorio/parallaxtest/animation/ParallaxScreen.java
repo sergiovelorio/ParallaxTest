@@ -10,12 +10,12 @@ import com.example.sergiovelorio.parallaxtest.util.Constants;
 
 public class ParallaxScreen implements Screen {
     public SpriteBatch batch;
-    public ScrollingBackground scrollingBackground;
+    public ParallaxBackground scrollingBackground;
     public Input i;
 
     public ParallaxScreen() {
         batch = new SpriteBatch();
-        this.scrollingBackground = new ScrollingBackground(Constants.am);
+        this.scrollingBackground = new ParallaxBackground(Constants.am);
 
         i = Gdx.input;
         i.setInputProcessor(new InputAdapter(){

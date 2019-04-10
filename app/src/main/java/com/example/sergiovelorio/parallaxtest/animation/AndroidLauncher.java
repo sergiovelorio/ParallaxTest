@@ -1,7 +1,6 @@
 package com.example.sergiovelorio.parallaxtest.animation;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,19 +18,18 @@ public class AndroidLauncher extends AndroidApplication {
     public float prev_global_scroll;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         config.useAccelerometer = false;
         config.useCompass = false;
-        Constants.CURRENT_CONTEXT = this;
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         Constants.SCREEN_WIDTH = dm.widthPixels;
         Constants.SCREEN_HEIGHT = dm.heightPixels;
         Constants.BASE_SIZE = (int) (Constants.SCREEN_HEIGHT * 1.3f / 100);
 
-        v = initializeForView(new ParallaxBackground(), config);
+        v = initializeForView(new Parallax(), config);
 
         v.setOnTouchListener(new View.OnTouchListener() {
             @Override

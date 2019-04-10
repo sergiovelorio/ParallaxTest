@@ -13,7 +13,6 @@ import java.io.File;
 
 public class Constants {
     public static AssetManager am = new AssetManager(new customRF());
-    public static Context CURRENT_CONTEXT;
     public static int BASE_SIZE;
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
